@@ -42,3 +42,6 @@ gem "capybara", "0.4.0", :group => :test
 gem "cucumber-rails", :group => :test
 gem "launchy", :group => :test
 gem "devise"
+gem "ZenTest"
+gem "autotest-growl"
+gem 'ruby-debug19'

@@ -1,0 +1,36 @@
+require 'ruby-debug'
+#require 'autotest/growl'
+#Autotest::Growl::remote_notification = true
+
+#Autotest.add_hook :ran_command do |autotest, modified|
+#  alerts = autotest.results.select { |line| /Duck Punched!/ =~ line }.uniq
+#  Autotest::Growl.growl('Todo:', alerts.join(''), 'pending', 0) unless alerts.empty?
+#end
+
+Autotest.add_hook :initialize do |at|
+#   at.add_mapping(%r%^spec/(integration)/.*rb$%) {|filename, _|
+#     filename
+#   }
+    %w{config/ coverage/ db/ doc/ log/ public/ script/ tmp/ vendor/rails vendor/plugins vendor/gems}.each do |exception|
+      at.add_exception(/^([\.\/]*)?#{exception}/)
+    end
+    at.add_mapping(%r%^app/models/(.*)\.rb$%) { |_, m|
+      ["spec/models/#{m[1]}_spec.rb"]
+    }
+
+    at.add_mapping(%r%^app/views/(.*)$%) { |_, m|
+      ["spec/views/#{m[1]}_spec.rb"]
+    }
+
+    at.add_mapping(%r%^app/controllers/(.*)\.rb$%) { |_, m|
+      if m[1] == "application"
+        files_matching %r%^spec/controllers/.*_spec\.rb$%
+      else
+        ["spec/controllers/#{m[1]}_spec.rb"]
+      end
+    }
+
+end
+# If the above doesn't work, try this:
+
+
