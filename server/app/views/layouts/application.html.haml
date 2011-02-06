@@ -4,6 +4,19 @@
   = csrf_meta_tag
   /[if lt IE 9]
     = javascript_include_tag 'html5'
-%body
-  = yield
+%body.bp
   = javascript_include_tag :defaults
+  = javascript_include_tag 'highcharts' 
+
+  #container
+    - flash.each do |name, msg|
+      = content_tag :div, msg, :id => "flash_#{name}" if msg.is_a?(String)
+    %p= link_to 'Home', root_path
+    - if user_signed_in?
+      #user_login_box{:style => "float:right"}
+        = current_user.email
+        |
+        \#{link_to 'My info', edit_user_registration_path} |
+        \#{link_to 'Sign out', destroy_user_session_path}
+    %div{:style => "clear:both"}
+    = yield

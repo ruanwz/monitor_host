@@ -1,5 +1,12 @@
 require 'spec_helper'
+require 'ruby-debug'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "Test Capybara" do
+    before {;visit '/'}
+
+    it "read the welcome page" do 
+      page.should have_content "Home"
+    end
+  end
 end

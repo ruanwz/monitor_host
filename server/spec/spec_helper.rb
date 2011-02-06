@@ -6,6 +6,9 @@ require 'factory_girl'
 require 'remarkable/active_model'
 require 'remarkable/mongoid'
 
+require 'capybara'
+require 'capybara/rails'
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -32,4 +35,12 @@ RSpec.configure do |config|
     Mongoid.master.collections.select {|c| c.name !~ /system/ }.each(&:drop)
   end
 
+end
+
+RSpec.configure do |config|
+    config.include Capybara
+    Capybara.current_driver = :selenium
+    Capybara.register_driver :selenium do |app|
+      Capybara::Driver::Selenium.new(app, :browser => :chrome)
+    end
 end

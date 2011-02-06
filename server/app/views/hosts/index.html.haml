@@ -1,0 +1,18 @@
+%h1 Listing hosts
+
+%table
+  %tr
+    %th
+    %th
+    %th
+
+  - @hosts.each do |host|
+    %tr
+      %td= host.mac
+      %td= link_to 'Show', host
+      %td= link_to 'Edit', edit_host_path(host)
+      %td= link_to 'Destroy', host, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Host', new_host_path

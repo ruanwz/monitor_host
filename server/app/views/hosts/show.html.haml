@@ -1,0 +1,8 @@
+%h1 Show the data of the hosts
+%p#notice= notice
+%p mac address:
+%p= @host.mac
+%p= high_chart("my_id", @h) 
+= link_to 'Edit', edit_host_path(@host)
+\|
+= link_to 'Back', hosts_path
