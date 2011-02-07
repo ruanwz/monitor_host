@@ -46,3 +46,4 @@ gem "ZenTest"
 gem "autotest-growl"
 gem 'ruby-debug19'
 gem 'lazy_high_charts'
+gem 'yajl-ruby'

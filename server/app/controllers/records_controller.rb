@@ -1,4 +1,7 @@
+require 'ruby-debug'
+require 'yajl'
 class RecordsController < ApplicationController
+  protect_from_forgery :except => :create  
   # GET /records
   # GET /records.xml
   def index
@@ -40,15 +43,23 @@ class RecordsController < ApplicationController
   # POST /records
   # POST /records.xml
   def create
-    @record = Record.new(params[:record])
+    json = request.body.read
+    parser = Yajl::Parser.new
+    hash = parser.parse(json)
+
+    @host=Host.find(:first, :conditions => { :mac => hash["mac"]})
+    @record = Record.new(hash)
+    @host.records << @record
 
     respond_to do |format|
-      if @record.save
+      if @host.save
         format.html { redirect_to(@record, :notice => 'Record was successfully created.') }
         format.xml  { render :xml => @record, :status => :created, :location => @record }
+        format.js  { render :json => @record, :status => :created, :location => @record }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @record.errors, :status => :unprocessable_entity }
+        format.js  { render :json => @record.errors, :status => :unprocessable_entity }
       end
     end
   end

@@ -1,0 +1,16 @@
+This project builds a monitoring system to check the average load on the host.
+
+The system consists of two parts: the client sends the info from the host and the server which receives the data and displays the data with the charts.
+
+The client only run command on the linux host to get the info of mac and the average load, then it send to the server using the REST interface
+
+The server have two functions: Webservice to receive the data and a user portal to view the data.
+
+I have made some scaffold controllers, and need to clean up the unused ones later.
+
+I have the following questions:
+
+1 How to run the client as a daemon or just use it in the cron job?
+2 If I want to use SSL to encrypt the data, how to do that? Just enable the HTTPS is enough?
+3 I have installed the capybara gems in the project but still not get ready to design in the BDD way. And how to test the charts? I have used the highcharts js library to display the data.
+

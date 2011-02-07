@@ -1,3 +1,4 @@
+require 'time'
 class HostsController < ApplicationController
   # GET /hosts
   # GET /hosts.xml
@@ -14,8 +15,24 @@ class HostsController < ApplicationController
   # GET /hosts/1.xml
   def show
     @host = Host.find(params[:id])
+    al_1=[]
+    al_5=[]
+    al_15=[]
+    @host.records.each do |r|
+      al_1<< [Time.parse(r.record_at).to_i*1000, r.average_load_1]
+      al_5<< [Time.parse(r.record_at).to_i*1000, r.average_load_5]
+      al_15<< [Time.parse(r.record_at).to_i*1000, r.average_load_15]
+
+    end
+    time=Time.now
     @h = LazyHighCharts::HighChart.new('graph') do |f|
-        f.series(:name=>'Average Load 1 min', :data=> [1, 3, 4, 3, 3, 5, 4] )
+        f.title :text=>"All average load data"
+        f.y_axis :title=> {:text => "Values"}
+        f.options[:x_axis]={:type=>"datetime"}
+        f.options[:chart]={:zoomType=>"x"}
+        f.series(:name=>'Average Load 1 min', :data=> al_1 )
+        f.series(:name=>'Average Load 5 min', :data=> al_5 )
+        f.series(:name=>'Average Load 15 min', :data=> al_15 )
       end
     respond_to do |format|
       format.html # show.html.erb
